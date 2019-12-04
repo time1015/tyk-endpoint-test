@@ -1,6 +1,7 @@
 package io.se7en.apigwtest;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -12,17 +13,15 @@ import javax.ws.rs.core.Response.Status;
 
 public class PingTest implements AutoCloseable {
   private final Client client;
+  private final Supplier<WebTarget> basePathGenerator;
 
-  public PingTest() {
-    this.client = buildClient();
+  public PingTest(ClientBuilder builder, Function<Client, WebTarget> basePathGenerator) {
+    this.client = buildClient(builder);
+    this.basePathGenerator = () -> basePathGenerator.apply(client);
   }
 
-  private Client buildClient() {
-    return ClientBuilder
-      .newBuilder()
-      .register(new PingMessageBodyWorker())
-      .register(new PongMessageBodyWorker())
-      .build();
+  private Client buildClient(ClientBuilder builder) {
+    return builder.register(new PingMessageBodyWorker()).register(new PongMessageBodyWorker()).build();
   }
 
   @Override
@@ -30,9 +29,9 @@ public class PingTest implements AutoCloseable {
     client.close();
   }
 
-  public void execute(Function<Client, WebTarget> basePathGenerator) {
+  public void execute() {
     Ping ping = PingFactory.newPing();
-    WebTarget target = basePathGenerator.apply(client).path("ping");
+    WebTarget target = basePathGenerator.get().path("ping");
 
     reportRequest(ping, target);
 
@@ -46,19 +45,19 @@ public class PingTest implements AutoCloseable {
     if (response.getStatus() == Status.OK.getStatusCode()) {
       if (response.hasEntity()) {
         Pong pong = response.readEntity(Pong.class);
-        System.out.println("Response payload: " + pong.toString());
+        System.out.println("Response Pong Payload: " + pong.toString());
       }
     } else {
       if (response.hasEntity()) {
         String payload = response.readEntity(String.class);
-        System.out.println("Response payload: " + payload);
+        System.out.println("Response Payload: " + payload);
       }
     }
   }
 
   private void reportRequest(Ping ping, WebTarget target) {
     System.out.println("Testing POST request on " + target.getUri().toString() + " ...");
-    System.out.println("Request Payload: " + ping.toString());
+    System.out.println("Request Ping Payload: " + ping.toString());
     System.out.println("---------");
   }
 }
