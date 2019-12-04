@@ -15,17 +15,13 @@ public class PingTest implements AutoCloseable {
   private final Client client;
   private final Supplier<WebTarget> basePathGenerator;
 
-  public PingTest(Function<Client, WebTarget> basePathGenerator) {
-    this.client = buildClient();
+  public PingTest(ClientBuilder builder, Function<Client, WebTarget> basePathGenerator) {
+    this.client = buildClient(builder);
     this.basePathGenerator = () -> basePathGenerator.apply(client);
   }
 
-  private Client buildClient() {
-    return ClientBuilder
-      .newBuilder()
-      .register(new PingMessageBodyWorker())
-      .register(new PongMessageBodyWorker())
-      .build();
+  private Client buildClient(ClientBuilder builder) {
+    return builder.register(new PingMessageBodyWorker()).register(new PongMessageBodyWorker()).build();
   }
 
   @Override
