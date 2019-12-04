@@ -46,19 +46,19 @@ public class PingTest implements AutoCloseable {
     if (response.getStatus() == Status.OK.getStatusCode()) {
       if (response.hasEntity()) {
         Pong pong = response.readEntity(Pong.class);
-        System.out.println("Response payload: " + pong.toString());
+        System.out.println("Response Pong Payload: " + pong.toString());
       }
     } else {
       if (response.hasEntity()) {
         String payload = response.readEntity(String.class);
-        System.out.println("Response payload: " + payload);
+        System.out.println("Response Payload: " + payload);
       }
     }
   }
 
   private void reportRequest(Ping ping, WebTarget target) {
     System.out.println("Testing POST request on " + target.getUri().toString() + " ...");
-    System.out.println("Request Payload: " + ping.toString());
+    System.out.println("Request Ping Payload: " + ping.toString());
     System.out.println("---------");
   }
 }
