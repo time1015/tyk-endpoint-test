@@ -12,14 +12,14 @@ public class Main {
   }
 
   private static void doHttpTest(MainConfiguration config) throws Throwable {
-    try (PingTest test = new PingTest()) {
-      test.execute(config.httpBasePathGenerator());
+    try (PingTest test = new PingTest(config.httpBasePathGenerator())) {
+      test.execute();
     }
   }
 
   private static void doHttpsTest(MainConfiguration config) throws Throwable {
-    try (PingTest test = new PingTest()) {
-      test.execute(config.httpsBasePathGenerator());
+    try (PingTest test = new PingTest(config.httpsBasePathGenerator())) {
+      test.execute();
     }
   }
 }

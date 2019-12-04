@@ -1,6 +1,7 @@
 package io.se7en.apigwtest;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -12,9 +13,11 @@ import javax.ws.rs.core.Response.Status;
 
 public class PingTest implements AutoCloseable {
   private final Client client;
+  private final Supplier<WebTarget> basePathGenerator;
 
-  public PingTest() {
+  public PingTest(Function<Client, WebTarget> basePathGenerator) {
     this.client = buildClient();
+    this.basePathGenerator = () -> basePathGenerator.apply(client);
   }
 
   private Client buildClient() {
@@ -30,9 +33,9 @@ public class PingTest implements AutoCloseable {
     client.close();
   }
 
-  public void execute(Function<Client, WebTarget> basePathGenerator) {
+  public void execute() {
     Ping ping = PingFactory.newPing();
-    WebTarget target = basePathGenerator.apply(client).path("ping");
+    WebTarget target = basePathGenerator.get().path("ping");
 
     reportRequest(ping, target);
 
