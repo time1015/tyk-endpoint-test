@@ -1,4 +1,4 @@
-package io.se7en.apigwtest;
+package com.pccw.tyk.apitest;
 
 public class Pong {
   private String response;

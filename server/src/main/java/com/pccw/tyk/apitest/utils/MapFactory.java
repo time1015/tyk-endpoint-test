@@ -1,4 +1,4 @@
-package io.se7en.apigwtest.utils;
+package com.pccw.tyk.apitest.utils;
 
 import java.util.Collections;
 import java.util.HashMap;

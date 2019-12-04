@@ -1,4 +1,4 @@
-package io.se7en.apigwtest;
+package com.pccw.tyk.apitest;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 @Provider
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class PongMessageBodyWorker implements MessageBodyReader<Pong>, MessageBodyWriter<Pong> {
+public class PingMessageBodyWorker implements MessageBodyReader<Ping>, MessageBodyWriter<Ping> {
   private final ObjectMapper mapper =
     JsonMapper
       .builder()
@@ -35,12 +35,12 @@ public class PongMessageBodyWorker implements MessageBodyReader<Pong>, MessageBo
 
   @Override
   public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-    return type == Pong.class;
+    return type == Ping.class;
   }
 
   @Override
-  public Pong readFrom(
-    Class<Pong> type,
+  public Ping readFrom(
+    Class<Ping> type,
     Type genericType,
     Annotation[] annotations,
     MediaType mediaType,
@@ -49,17 +49,17 @@ public class PongMessageBodyWorker implements MessageBodyReader<Pong>, MessageBo
   )
     throws IOException,
     WebApplicationException {
-    return mapper.readValue(entityStream, Pong.class);
+    return mapper.readValue(entityStream, Ping.class);
   }
 
   @Override
   public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-    return type == Pong.class;
+    return type == Ping.class;
   }
 
   @Override
   public void writeTo(
-    Pong t,
+    Ping t,
     Class<?> type,
     Type genericType,
     Annotation[] annotations,

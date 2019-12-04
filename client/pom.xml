@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.se7en</groupId>
+  <groupId>com.pccw.tyk</groupId>
   <artifactId>api-gateway-test-client</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
@@ -38,7 +38,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>io.se7en.apigwtest.Main</mainClass>
+              <mainClass>com.pccw.tyk.apitest.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

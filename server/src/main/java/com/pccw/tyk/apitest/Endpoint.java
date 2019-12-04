@@ -1,4 +1,4 @@
-package io.se7en.apigwtest;
+package com.pccw.tyk.apitest;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.se7en.apigwtest.utils.Json;
-import io.se7en.apigwtest.utils.ListFactory;
-import io.se7en.apigwtest.utils.MapFactory;
+import com.pccw.tyk.apitest.utils.Json;
+import com.pccw.tyk.apitest.utils.ListFactory;
+import com.pccw.tyk.apitest.utils.MapFactory;
 
 @RestController
 public class Endpoint {

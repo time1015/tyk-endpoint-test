@@ -1,4 +1,4 @@
-package io.se7en.apigwtest;
+package com.pccw.tyk.apitest;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
