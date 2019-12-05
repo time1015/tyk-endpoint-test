@@ -114,3 +114,6 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 
 # End of https://www.gitignore.io/api/java,maven,eclipse,code-java
+
+# Project-specific files
+api-gateway-test-keystore
