@@ -11,15 +11,31 @@ public class Main {
     System.out.println("Done.");
   }
 
-  private static void doHttpTest(MainConfiguration config) throws Throwable {
+  private static void doHttpTest(MainConfiguration config) {
     try (PingTest test = new PingTest(ClientBuilderFactory.forHttp(), config.httpBasePathGenerator())) {
       test.execute();
+    } catch (Throwable t) {
+      System.out.println("An error occurred!");
+      printStackTracesOfAllCauses(t);
+      System.out.println("Cancelled.");
     }
   }
 
   private static void doHttpsTest(MainConfiguration config) throws Throwable {
     try (PingTest test = new PingTest(ClientBuilderFactory.forHttps(), config.httpsBasePathGenerator())) {
       test.execute();
+    } catch (Throwable t) {
+      System.out.println("An error occurred!");
+      printStackTracesOfAllCauses(t);
+      System.out.println("Cancelled.");
+    }
+  }
+
+  private static void printStackTracesOfAllCauses(Throwable throwable) {
+    System.out.println("===");
+    for (Throwable t = throwable; t != null; t = t.getCause()) {
+      t.printStackTrace(System.out);
+      System.out.println("===");
     }
   }
 }
