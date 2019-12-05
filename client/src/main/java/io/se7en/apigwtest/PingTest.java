@@ -39,8 +39,11 @@ public class PingTest implements AutoCloseable {
     reportRequest(ping, target);
 
     Future<Response> request = target.request(MediaType.APPLICATION_JSON_TYPE).async().post(Entity.json(ping));
-    try (Response response = request.get()) {
+    try (Response response = request.get(5, TimeUnit.SECONDS)) {
       reportResponse(response);
+    } catch (TimeoutException e) {
+      System.out.println("5-second timeout passed. Cancelled.");
+      request.cancel(true);
     }
   }
 
