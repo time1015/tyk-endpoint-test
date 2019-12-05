@@ -1,5 +1,8 @@
 package io.se7en.apigwtest;
 
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -29,14 +32,18 @@ public class PingTest implements AutoCloseable {
     client.close();
   }
 
-  public void execute() {
+  public void execute() throws Throwable {
     Ping ping = PingFactory.newPing();
     WebTarget target = basePathGenerator.get().path("ping");
 
     reportRequest(ping, target);
 
-    try (Response response = target.request(MediaType.APPLICATION_JSON_TYPE).post(Entity.json(ping))) {
+    Future<Response> request = target.request(MediaType.APPLICATION_JSON_TYPE).async().post(Entity.json(ping));
+    try (Response response = request.get(5, TimeUnit.SECONDS)) {
       reportResponse(response);
+    } catch (TimeoutException e) {
+      System.out.println("5-second timeout passed. Cancelled.");
+      request.cancel(true);
     }
   }
 
