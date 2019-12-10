@@ -1,9 +1,9 @@
 package io.se7en.apigwtest;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.security.KeyStore;
-import java.security.KeyStore.LoadStoreParameter;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.ws.rs.client.ClientBuilder;
@@ -18,18 +18,20 @@ public class ClientBuilderFactory {
   }
 
   private static KeyStore trustStore() throws Throwable {
-    return KeyStore.getInstance(keyStoreFile(), keyStoreParameter());
+    KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+    keyStore.load(keyStoreFileStream(), keyStorePassword());
+    return keyStore;
   }
 
-  private static File keyStoreFile() throws FileNotFoundException {
+  private static FileInputStream keyStoreFileStream() throws FileNotFoundException {
     File file = new File("api-gateway-test-keystore");
     if (!file.exists())
       throw new FileNotFoundException("KeyStore (" + file.getAbsolutePath() + ") not found.");
-    return file;
+    return new FileInputStream(file);
   }
 
-  private static LoadStoreParameter keyStoreParameter() {
-    return () -> new KeyStore.PasswordProtection("apigwtest".toCharArray());
+  private static char[] keyStorePassword() {
+    return "apigwtest".toCharArray();
   }
 
   private static HostnameVerifier noOpHostnameVerifier() {
