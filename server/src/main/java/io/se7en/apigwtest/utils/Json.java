@@ -48,11 +48,7 @@ public interface Json extends Supplier<String> {
   }
 
   public static Json map(Map<String, Json> map) {
-    return () -> map
-      .entrySet()
-      .stream()
-      .map(e -> quoteOrNull(e.getKey()) + ":" + e.getValue().get())
-      .collect(Collectors.joining(",", "{", "}"));
+    return map(ListFactory.from(map.entrySet()));
   }
 
   @SafeVarargs
