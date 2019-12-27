@@ -48,11 +48,7 @@ public interface Json extends Supplier<String> {
   }
 
   public static Json map(Map<String, Json> map) {
-    return () -> map
-      .entrySet()
-      .stream()
-      .map(e -> quoteOrNull(e.getKey()) + ":" + e.getValue().get())
-      .collect(Collectors.joining(",", "{", "}"));
+    return map(ListFactory.from(map.entrySet()));
   }
 
   @SafeVarargs
@@ -64,7 +60,8 @@ public interface Json extends Supplier<String> {
     return () -> entries
       .stream()
       .map(e -> MapFactory.entry(quoteOrNull(e.getKey()), e.getValue()))
-      .map(e -> e.getKey().get() + ":" + e.getValue().get())
+      .map(e -> MapFactory.entry(e.getKey().get(), e.getValue().get()))
+      .map(e -> e.getKey() + ":" + e.getValue())
       .collect(Collectors.joining(",", "{", "}"));
   }
 }
